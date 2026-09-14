@@ -1,0 +1,156 @@
+14:41:35.527  === ������ �������. ������� RU: 9996 ����, ������� EN: 9894 ���� ===
+14:41:41.142  boundary: �������, �� ������ �����: "������"
+14:41:47.584  boundary: typed="ghbdtn" lang=2 en_candidate="ghbdtn" ru_candidate="������" activeMatch=False
+14:41:47.589    -> altWord="������" altMatch=True
+14:41:47.593    -> ���������: "ghbdtn" -> "������"
+14:41:59.652  boundary: �������, �� ������ �����: "�����"
+14:42:09.931  boundary: �������, �� ������ �����: "����"
+14:45:25.556  === Движок запущен. Словарь RU: 9996 слов, словарь EN: 9894 слов ===
+14:45:31.056  boundary: typed="руддщ" lang=1 en_candidate="hello" ru_candidate="руддщ" activeMatch=False
+14:45:31.056    -> altWord="hello" altMatch=True
+14:45:31.070    -> ИСПРАВЛЯЮ: "руддщ" -> "hello"
+14:45:37.358  boundary: typed="ghbdtn" lang=2 en_candidate="ghbdtn" ru_candidate="привет" activeMatch=False
+14:45:37.359    -> altWord="привет" altMatch=True
+14:45:37.365    -> ИСПРАВЛЯЮ: "ghbdtn" -> "привет"
+14:46:15.052  === Движок запущен. Словарь RU: 9996 слов, словарь EN: 9894 слов ===
+14:46:21.304  boundary: typed="гтк" lang=1 en_candidate="unr" ru_candidate="гтк" activeMatch=False
+14:46:21.304    -> altWord="unr" altMatch=False
+14:46:21.311    -> альтернативного слова нет в словаре, не трогаем
+14:46:24.303  boundary: typed="unr" lang=2 en_candidate="unr" ru_candidate="гтк" activeMatch=False
+14:46:24.305    -> altWord="гтк" altMatch=False
+14:46:24.311    -> альтернативного слова нет в словаре, не трогаем
+14:46:35.949  boundary: typed="гтк" lang=1 en_candidate="unr" ru_candidate="гтк" activeMatch=False
+14:46:35.950    -> altWord="unr" altMatch=False
+14:46:35.957    -> альтернативного слова нет в словаре, не трогаем
+14:46:39.806  boundary: typed="куфд" lang=1 en_candidate="real" ru_candidate="куфд" activeMatch=False
+14:46:39.806    -> altWord="real" altMatch=True
+14:46:39.813    -> ИСПРАВЛЯЮ: "куфд" -> "real"
+14:46:49.686  boundary: пропуск (buffer.count=0 typedWord="")
+14:46:55.143  boundary: typed="гткуфд" lang=1 en_candidate="unreal" ru_candidate="гткуфд" activeMatch=False
+14:46:55.144    -> altWord="unreal" altMatch=False
+14:46:55.150    -> альтернативного слова нет в словаре, не трогаем
+14:47:12.139  KeyToChar не дал символа для vk=46 активная_hkl_langid=0419 - сброс буфера
+14:47:16.473  boundary: пропуск (buffer.count=0 typedWord="")
+14:47:16.639  boundary: пропуск (buffer.count=0 typedWord="")
+14:47:19.556  boundary: typed="но" lang=1 en_candidate="yj" ru_candidate="но" activeMatch=True
+14:47:19.557    -> уже валидное слово своего языка, не трогаем
+14:47:21.419  boundary: typed="надо" lang=1 en_candidate="yflj" ru_candidate="надо" activeMatch=True
+14:47:21.420    -> уже валидное слово своего языка, не трогаем
+14:47:23.394  boundary: typed="до" lang=1 en_candidate="lj" ru_candidate="до" activeMatch=True
+14:47:23.395    -> уже валидное слово своего языка, не трогаем
+14:47:24.775  boundary: typed="авить" lang=1 en_candidate="fdbnm" ru_candidate="авить" activeMatch=False
+14:47:24.776    -> altWord="fdbnm" altMatch=False
+14:47:24.783    -> альтернативного слова нет в словаре, не трогаем
+14:47:37.578  boundary: typed="функциональность" lang=1 en_candidate="aeyrwbjyfkmyjcnm" ru_candidate="функциональность" activeMatch=False
+14:47:37.578    -> altWord="aeyrwbjyfkmyjcnm" altMatch=False
+14:47:37.585    -> альтернативного слова нет в словаре, не трогаем
+14:47:43.376  boundary: пропуск (buffer.count=1 typedWord="и")
+14:47:43.573  boundary: пропуск (buffer.count=0 typedWord="")
+14:47:56.079  KeyToChar не дал символа для vk=145 активная_hkl_langid=0419 - сброс буфера
+14:47:56.758  KeyToChar не дал символа для vk=145 активная_hkl_langid=0419 - сброс буфера
+14:47:57.104  KeyToChar не дал символа для vk=145 активная_hkl_langid=0419 - сброс буфера
+14:47:58.050  KeyToChar не дал символа для vk=145 активная_hkl_langid=0419 - сброс буфера
+14:47:58.221  KeyToChar не дал символа для vk=145 активная_hkl_langid=0419 - сброс буфера
+14:47:58.930  KeyToChar не дал символа для vk=19 активная_hkl_langid=0419 - сброс буфера
+14:47:59.176  KeyToChar не дал символа для vk=19 активная_hkl_langid=0419 - сброс буфера
+14:47:59.569  KeyToChar не дал символа для vk=19 активная_hkl_langid=0419 - сброс буфера
+14:47:59.779  KeyToChar не дал символа для vk=19 активная_hkl_langid=0419 - сброс буфера
+14:48:06.265  boundary: typed="повесть" lang=1 en_candidate="gjdtcnm" ru_candidate="повесть" activeMatch=True
+14:48:06.265    -> уже валидное слово своего языка, не трогаем
+14:48:10.086  boundary: typed="ить" lang=1 en_candidate="bnm" ru_candidate="ить" activeMatch=False
+14:48:10.086    -> altWord="bnm" altMatch=False
+14:48:10.092    -> альтернативного слова нет в словаре, не трогаем
+14:48:11.047  boundary: typed="на" lang=1 en_candidate="yf" ru_candidate="на" activeMatch=True
+14:48:11.047    -> уже валидное слово своего языка, не трогаем
+14:48:14.293  boundary: typed="кнопку" lang=1 en_candidate="ryjgre" ru_candidate="кнопку" activeMatch=False
+14:48:14.294    -> altWord="ryjgre" altMatch=False
+14:48:14.301    -> альтернативного слова нет в словаре, не трогаем
+14:48:32.590  KeyToChar не дал символа для vk=39 активная_hkl_langid=0409 - сброс буфера
+14:48:33.510  boundary: пропуск (buffer.count=0 typedWord="")
+14:48:51.933  boundary: пропуск (buffer.count=0 typedWord="")
+14:48:53.298  boundary: typed="на" lang=1 en_candidate="yf" ru_candidate="на" activeMatch=True
+14:48:53.298    -> уже валидное слово своего языка, не трогаем
+14:48:55.050  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:55.550  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:55.598  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:55.630  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:55.661  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:55.693  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:56.350  KeyToChar не дал символа для vk=46 активная_hkl_langid=0419 - сброс буфера
+14:48:57.280  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:57.783  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:57.815  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:57.846  KeyToChar не дал символа для vk=39 активная_hkl_langid=0419 - сброс буфера
+14:48:58.304  boundary: пропуск (buffer.count=0 typedWord="")
+14:49:33.608  boundary: typed="перекл" lang=1 en_candidate="gthtrk" ru_candidate="перекл" activeMatch=False
+14:49:33.608    -> altWord="gthtrk" altMatch=False
+14:49:33.615    -> альтернативного слова нет в словаре, не трогаем
+14:49:36.469  boundary: typed="чение" lang=1 en_candidate="xtybt" ru_candidate="чение" activeMatch=False
+14:49:36.470    -> altWord="xtybt" altMatch=False
+14:49:36.476    -> альтернативного слова нет в словаре, не трогаем
+14:49:41.543  boundary: typed="слова" lang=1 en_candidate="ckjdf" ru_candidate="слова" activeMatch=False
+14:49:41.544    -> altWord="ckjdf" altMatch=False
+14:49:41.551    -> альтернативного слова нет в словаре, не трогаем
+14:49:46.107  boundary: пропуск (buffer.count=0 typedWord="")
+14:49:46.473  boundary: пропуск (buffer.count=0 typedWord="")
+14:49:47.038  boundary: typed="на" lang=1 en_candidate="yf" ru_candidate="на" activeMatch=True
+14:49:47.038    -> уже валидное слово своего языка, не трогаем
+14:50:25.027  boundary: typed="от" lang=1 en_candidate="jn" ru_candidate="от" activeMatch=True
+14:50:25.027    -> уже валидное слово своего языка, не трогаем
+14:50:27.649  boundary: typed="случай" lang=1 en_candidate="ckexfq" ru_candidate="случай" activeMatch=True
+14:50:27.649    -> уже валидное слово своего языка, не трогаем
+14:50:28.691  boundary: typed="если" lang=1 en_candidate="tckb" ru_candidate="если" activeMatch=True
+14:50:28.691    -> уже валидное слово своего языка, не трогаем
+14:50:30.350  boundary: typed="слово" lang=1 en_candidate="ckjdj" ru_candidate="слово" activeMatch=True
+14:50:30.350    -> уже валидное слово своего языка, не трогаем
+14:50:33.182  boundary: typed="дол" lang=1 en_candidate="ljk" ru_candidate="дол" activeMatch=False
+14:50:33.183    -> altWord="ljk" altMatch=False
+14:50:33.190    -> альтернативного слова нет в словаре, не трогаем
+14:50:36.287  boundary: typed="но" lang=1 en_candidate="yj" ru_candidate="но" activeMatch=True
+14:50:36.288    -> уже валидное слово своего языка, не трогаем
+14:50:39.097  boundary: typed="выглядить" lang=1 en_candidate="dsukzlbnm" ru_candidate="выглядить" activeMatch=False
+14:50:39.097    -> altWord="dsukzlbnm" altMatch=False
+14:50:39.105    -> альтернативного слова нет в словаре, не трогаем
+14:50:41.128  boundary: typed="именно" lang=1 en_candidate="bvtyyj" ru_candidate="именно" activeMatch=True
+14:50:41.129    -> уже валидное слово своего языка, не трогаем
+14:50:41.937  boundary: typed="так" lang=1 en_candidate="nfr" ru_candidate="так" activeMatch=True
+14:50:41.937    -> уже валидное слово своего языка, не трогаем
+14:50:44.505  boundary: пропуск (buffer.count=0 typedWord="")
+14:50:44.808  boundary: пропуск (buffer.count=0 typedWord="")
+14:50:45.087  boundary: пропуск (buffer.count=1 typedWord="а")
+14:50:45.910  boundary: typed="не" lang=1 en_candidate="yt" ru_candidate="не" activeMatch=True
+14:50:45.911    -> уже валидное слово своего языка, не трогаем
+14:50:46.533  boundary: typed="как" lang=1 en_candidate="rfr" ru_candidate="как" activeMatch=True
+14:50:46.533    -> уже валидное слово своего языка, не трогаем
+14:50:48.058  boundary: typed="решила" lang=1 en_candidate="htibkf" ru_candidate="решила" activeMatch=False
+14:50:48.058    -> altWord="htibkf" altMatch=False
+14:50:48.065    -> альтернативного слова нет в словаре, не трогаем
+14:50:55.131  boundary: typed="программаили" lang=1 en_candidate="ghjuhfvvfbkb" ru_candidate="программаили" activeMatch=False
+14:50:55.139    -> altWord="ghjuhfvvfbkb" altMatch=False
+14:50:55.145    -> альтернативного слова нет в словаре, не трогаем
+14:50:56.294  boundary: пропуск (buffer.count=1 typedWord="я")
+14:51:01.815  boundary: пропуск (buffer.count=0 typedWord="")
+14:51:05.864  boundary: typed="туда" lang=1 en_candidate="nelf" ru_candidate="туда" activeMatch=True
+14:51:05.865    -> уже валидное слово своего языка, не трогаем
+14:51:07.049  boundary: пропуск (buffer.count=1 typedWord="с")
+14:51:12.411  boundary: typed="да" lang=1 en_candidate="lf" ru_candidate="да" activeMatch=True
+14:51:12.412    -> уже валидное слово своего языка, не трогаем
+14:51:13.213  boundary: пропуск (buffer.count=0 typedWord="")
+14:51:20.116  boundary: пропуск (buffer.count=1 typedWord="а")
+14:51:20.939  boundary: typed="если" lang=1 en_candidate="tckb" ru_candidate="если" activeMatch=True
+14:51:20.939    -> уже валидное слово своего языка, не трогаем
+14:51:26.046  boundary: typed="двойное" lang=1 en_candidate="ldjqyjt" ru_candidate="двойное" activeMatch=False
+14:51:26.047    -> altWord="ldjqyjt" altMatch=False
+14:51:26.054    -> альтернативного слова нет в словаре, не трогаем
+14:51:26.896  boundary: typed="на" lang=1 en_candidate="yf" ru_candidate="на" activeMatch=True
+14:51:26.896    -> уже валидное слово своего языка, не трогаем
+14:51:28.354  boundary: typed="атие" lang=1 en_candidate="fnbt" ru_candidate="атие" activeMatch=False
+14:51:28.355    -> altWord="fnbt" altMatch=False
+14:51:28.362    -> альтернативного слова нет в словаре, не трогаем
+14:51:31.088  boundary: typed="то" lang=1 en_candidate="nj" ru_candidate="то" activeMatch=True
+14:51:31.089    -> уже валидное слово своего языка, не трогаем
+14:51:32.118  boundary: typed="все" lang=1 en_candidate="dct" ru_candidate="все" activeMatch=True
+14:51:32.118    -> уже валидное слово своего языка, не трогаем
+14:51:36.670  boundary: typed="пслдедней" lang=1 en_candidate="gckltlytq" ru_candidate="пслдедней" activeMatch=False
+14:51:36.671    -> altWord="gckltlytq" altMatch=False
+14:51:36.677    -> альтернативного слова нет в словаре, не трогаем
