@@ -33,6 +33,12 @@ type
     TickCount: Cardinal;
   end;
 
+  TLastLineInfo = record
+    Words: TStringList;           // Список слов последней строки
+    BufferCopies: array of TArray<TKeyEvent>; // Массив буферов для каждого слова
+    StartTick: Cardinal;
+  end;
+
   TAutoCorrectEngine = class
   private
     FHookHandle: HHOOK;
@@ -47,15 +53,22 @@ type
     FLastForegroundWnd: HWND;
 
     FLastCorrection: TLastCorrection;
+    FLastLine: TLastLineInfo;
 
     FEnabled: Boolean;
     FExcludedClasses: TStringList; // классы окон, где коррекция выключена
 
     FLogPath: string;
     FLogEnabled: Boolean;
+    
+    // Для отслеживания одиночного/двойного нажатия правого Ctrl
+    FRightCtrlPressTime: Cardinal;
+    FRightCtrlPressCount: Integer;
+
     procedure LogMsg(const S: string);
 
     procedure ResetWordBuffer;
+    procedure ResetLastLine;
     function IsModifierKey(vkCode: DWORD): Boolean;
     function IsBoundaryKey(vkCode: DWORD): Boolean;
     function BuildKeyState: TKeyboardState256;
@@ -69,6 +82,11 @@ type
     procedure SwitchLayoutForForeground(Lang: TAppLanguage);
 
     procedure TryRevertLastCorrection;
+    
+    // Методы для обработки правого Ctrl
+    procedure HandleRightCtrlPress;
+    procedure ToggleLastWord;
+    procedure ToggleLastLine;
   public
     constructor Create(const DictRuPath, DictEnPath: string);
     destructor Destroy; override;
@@ -207,6 +225,13 @@ begin
   FEnabled := True;
   ResetWordBuffer;
 
+  // Инициализация переменных для правого Ctrl
+  FRightCtrlPressTime := 0;
+  FRightCtrlPressCount := 0;
+  FLastLine.Words := TStringList.Create;
+  FLastLine.StartTick := 0;
+  SetLength(FLastLine.BufferCopies, 0);
+
   FLogPath := ExtractFilePath(ParamStr(0)) + 'debug.log';
   FLogEnabled := True; // поставьте False, когда всё заработает - это временная диагностика
   LogMsg(Format('=== Движок запущен. Словарь RU: %d слов, словарь EN: %d слов ===',
@@ -220,6 +245,7 @@ begin
   FDicRu.Free;
   FDicEn.Free;
   FExcludedClasses.Free;
+  FLastLine.Words.Free;
   inherited;
 end;
 
@@ -245,6 +271,13 @@ begin
   FBuffer.Clear;
   FTypedWord := '';
   FTypedWordLang := langUnknown;
+end;
+
+procedure TAutoCorrectEngine.ResetLastLine;
+begin
+  FLastLine.Words.Clear;
+  SetLength(FLastLine.BufferCopies, 0);
+  FLastLine.StartTick := 0;
 end;
 
 procedure TAutoCorrectEngine.LogMsg(const S: string);
@@ -358,11 +391,12 @@ var
   Wnd: HWND;
 begin
   // Если сменилось окно/фокус с момента последнего события - буфер слова
-  // уже не имеет смысла (пользователь кликнул в другое место).
+  // и последняя строка уже не имеют смысла (пользователь кликнул в другое место).
   Wnd := GetForegroundWindow;
   if Wnd <> FLastForegroundWnd then
   begin
     ResetWordBuffer;
+    ResetLastLine;
     FLastForegroundWnd := Wnd;
   end;
 
@@ -407,6 +441,9 @@ begin
   begin
     ProcessWordBoundary;
     ResetWordBuffer;
+    // Если нажат Enter - это граница строки, сбрасываем последнюю строку
+    if vkCode = VK_RETURN then
+      ResetLastLine;
     Exit;
   end;
 
@@ -443,6 +480,10 @@ begin
     VK_CONTROL, VK_LCONTROL, VK_RCONTROL: FCtrlDown := False;
     VK_MENU, VK_LMENU, VK_RMENU: FAltDown := False;
   end;
+
+  // Обработка нажатия правого Ctrl (на отпускание, чтобы не было ложных срабатываний)
+  if vkCode = VK_RCONTROL then
+    HandleRightCtrlPress;
 end;
 
 function ContainsOnlyLetters(const S: string): Boolean;
@@ -496,6 +537,17 @@ begin
     ResetWordBuffer;
     Exit;
   end;
+
+  // Сохраняем слово в список слов последней строки для возможности переключения правым Ctrl
+  FLastLine.Words.Add(FTypedWord);
+  
+  // Добавляем буфер событий клавиш для этого слова
+  SetLength(FLastLine.BufferCopies, Length(FLastLine.BufferCopies) + 1);
+  SetLength(FLastLine.BufferCopies[High(FLastLine.BufferCopies)], FBuffer.Count);
+  for I := 0 to FBuffer.Count - 1 do
+    FLastLine.BufferCopies[High(FLastLine.BufferCopies)][I] := FBuffer[I];
+  
+  FLastLine.StartTick := GetTickCount;
 
   // Строим оба варианта прочтения буфера клавиш: "как если бы была
   // активна русская раскладка" и "как если бы была активна английская".
@@ -611,6 +663,178 @@ begin
   SendBackspaces(Length(FLastCorrection.NewWord));
   SendUnicodeText(FLastCorrection.OldWord);
   FLastCorrection.Active := False;
+end;
+
+{ ---------- Обработка правого Ctrl (одиночное/двойное нажатие) ---------- }
+
+const
+  DOUBLE_CLICK_TIME_MS = 300; // Максимальный интервал между нажатиями для двойного клика
+
+procedure TAutoCorrectEngine.HandleRightCtrlPress;
+var
+  NowTick: Cardinal;
+begin
+  NowTick := GetTickCount;
+  
+  // Проверяем, было ли это второе нажатие (двойной клик)
+  if (NowTick - FRightCtrlPressTime <= DOUBLE_CLICK_TIME_MS) and (FRightCtrlPressCount = 1) then
+  begin
+    // Двойное нажатие - переключаем раскладку
+    FRightCtrlPressCount := 0;
+    FRightCtrlPressTime := 0;
+    
+    LogMsg('Right Ctrl: двойное нажатие - переключение раскладки');
+    ToggleLastLine;
+  end
+  else
+  begin
+    // Одиночное нажатие - переключаем последнее слово
+    FRightCtrlPressTime := NowTick;
+    FRightCtrlPressCount := 1;
+    
+    LogMsg('Right Ctrl: одиночное нажатие - переключение последнего слова');
+    ToggleLastWord;
+  end;
+end;
+
+procedure TAutoCorrectEngine.ToggleLastWord;
+var
+  OldWord, NewWord: string;
+  ActiveHkl: HKL;
+  EnCandidate, RuCandidate: string;
+  I: Integer;
+  Ch: WideChar;
+  WordIndex: Integer;
+begin
+  // Переключаем последнее набранное слово туда-обратно из сохранённой копии
+  if FLastLine.Words.Count = 0 then
+  begin
+    LogMsg('ToggleLastWord: нечего переключать (пустой список слов)');
+    Exit;
+  end;
+
+  // Берём последнее слово из списка
+  WordIndex := FLastLine.Words.Count - 1;
+  
+  // Проверяем, есть ли буфер для этого слова
+  if (WordIndex >= Length(FLastLine.BufferCopies)) or 
+     (Length(FLastLine.BufferCopies[WordIndex]) < 2) then
+  begin
+    LogMsg('ToggleLastWord: нет буфера клавиш для последнего слова');
+    Exit;
+  end;
+
+  // Строим оба варианта прочтения буфера клавиш из сохранённой копии
+  EnCandidate := '';
+  RuCandidate := '';
+  for I := 0 to Length(FLastLine.BufferCopies[WordIndex]) - 1 do
+  begin
+    if KeyToChar(FLastLine.BufferCopies[WordIndex][I].vkCode, 
+                 FLastLine.BufferCopies[WordIndex][I].scanCode, 
+                 FLastLine.BufferCopies[WordIndex][I].KeyState, FHklEn, Ch) then
+      EnCandidate := EnCandidate + Ch;
+    if KeyToChar(FLastLine.BufferCopies[WordIndex][I].vkCode, 
+                 FLastLine.BufferCopies[WordIndex][I].scanCode, 
+                 FLastLine.BufferCopies[WordIndex][I].KeyState, FHklRu, Ch) then
+      RuCandidate := RuCandidate + Ch;
+  end;
+
+  if (EnCandidate = '') or (RuCandidate = '') then
+    Exit;
+
+  // Определяем, какой вариант сейчас активен, и переключаем на альтернативный
+  ActiveHkl := CurrentForegroundHkl;
+  if HklLangId(ActiveHkl) = LANGID_RUSSIAN then
+  begin
+    // Сейчас русская раскладка - переключаем на английскую версию
+    OldWord := RuCandidate;
+    NewWord := EnCandidate;
+  end
+  else
+  begin
+    // Сейчас английская раскладка - переключаем на русскую версию
+    OldWord := EnCandidate;
+    NewWord := RuCandidate;
+  end;
+
+  LogMsg(Format('ToggleLastWord: "%s" -> "%s"', [OldWord, NewWord]));
+  
+  // Отправляем исправление
+  SendBackspaces(Length(OldWord));
+  SendUnicodeText(NewWord);
+end;
+
+procedure TAutoCorrectEngine.ToggleLastLine;
+var
+  Wnd: HWND;
+  ThreadId: DWORD;
+  I, WordIndex: Integer;
+  OldWord, NewWord, EnCandidate, RuCandidate: string;
+  Ch: WideChar;
+  ActiveHkl: HKL;
+begin
+  // Переключаем всю последнюю строку - все слова в ней туда-обратно
+  if FLastLine.Words.Count = 0 then
+  begin
+    LogMsg('ToggleLastLine: нечего переключать (пустой список слов)');
+    Exit;
+  end;
+
+  // Получаем текущее активное окно для определения текущей раскладки
+  Wnd := GetForegroundWindow;
+  if Wnd = 0 then Exit;
+  
+  ThreadId := GetWindowThreadProcessId(Wnd, nil);
+  ActiveHkl := GetKeyboardLayout(ThreadId);
+  
+  LogMsg(Format('ToggleLastLine: переключение %d слов в строке', [FLastLine.Words.Count]));
+  
+  // Проходим по всем словам в строке и переключаем каждое
+  for WordIndex := 0 to FLastLine.Words.Count - 1 do
+  begin
+    // Проверяем, есть ли буфер для этого слова
+    if (WordIndex >= Length(FLastLine.BufferCopies)) or 
+       (Length(FLastLine.BufferCopies[WordIndex]) < 2) then
+      Continue;
+
+    // Строим оба варианта прочтения буфера клавиш
+    EnCandidate := '';
+    RuCandidate := '';
+    for I := 0 to Length(FLastLine.BufferCopies[WordIndex]) - 1 do
+    begin
+      if KeyToChar(FLastLine.BufferCopies[WordIndex][I].vkCode, 
+                   FLastLine.BufferCopies[WordIndex][I].scanCode, 
+                   FLastLine.BufferCopies[WordIndex][I].KeyState, FHklEn, Ch) then
+        EnCandidate := EnCandidate + Ch;
+      if KeyToChar(FLastLine.BufferCopies[WordIndex][I].vkCode, 
+                   FLastLine.BufferCopies[WordIndex][I].scanCode, 
+                   FLastLine.BufferCopies[WordIndex][I].KeyState, FHklRu, Ch) then
+        RuCandidate := RuCandidate + Ch;
+    end;
+
+    if (EnCandidate = '') or (RuCandidate = '') then
+      Continue;
+
+    // Определяем, какой вариант сейчас активен, и переключаем на альтернативный
+    if HklLangId(ActiveHkl) = LANGID_RUSSIAN then
+    begin
+      // Сейчас русская раскладка - переключаем на английскую версию
+      OldWord := RuCandidate;
+      NewWord := EnCandidate;
+    end
+    else
+    begin
+      // Сейчас английская раскладка - переключаем на русскую версию
+      OldWord := EnCandidate;
+      NewWord := RuCandidate;
+    end;
+
+    LogMsg(Format('ToggleLastLine: слово %d: "%s" -> "%s"', [WordIndex + 1, OldWord, NewWord]));
+    
+    // Отправляем исправление
+    SendBackspaces(Length(OldWord));
+    SendUnicodeText(NewWord);
+  end;
 end;
 
 end.
